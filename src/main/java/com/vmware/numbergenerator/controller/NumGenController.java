@@ -32,6 +32,6 @@ public class NumGenController {
         if(action.equals("get_numlist")) {
             return ResponseEntity.ok(service.getActionList(uuid));
         }
-        return ResponseEntity.ok(service.status(uuid));
+        return ResponseEntity.ok(service.getActionList(uuid));
     }
 }

@@ -6,6 +6,7 @@ import com.vmware.numbergenerator.repository.NumGenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -33,13 +34,18 @@ public class NumGenService {
 
     public String status(UUID uuid) {
         Optional<GeneratedNumber> opt = repository.findById(uuid);
-        if (opt != null) {
+        if (!opt.isEmpty()) {
             return "SUCCESS";
         }
         return "Either task is in progress or task doesn't exist, try after sometime later";
     }
 
     public String getActionList(UUID uuid) {
-        return null;
+        try {
+            Optional<GeneratedNumber> opt = repository.findById(uuid);
+            return opt.get().getSequence();
+        } catch(NoSuchElementException e) {
+            return "Either task is in progress or task doesn't exist, try after sometime later";
+        }
     }
 }
